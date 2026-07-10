@@ -1,148 +1,150 @@
-# 🧬 Anima Agent
+# 🧬 Anima Agent — 灵元智能体底座
 
-> **灵元 ANIMA AGENT — 有灵魂的开源智能体底座**
+> 基于 [OpenClaw](https://github.com/openclaw/openclaw) (MIT 许可) 的国产 AI Agent 发行版。
 >
-> 基于 OpenClaw MIT 许可深度定制，内置灵元三件套（MeshIdentity + MemGuard + Polaris），中文优先，国产模型开箱即用。
+> 开箱即用 · 国产模型 · 中文优先
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![OpenClaw](https://img.shields.io/badge/based%20on-OpenClaw-red)](https://github.com/openclaw/openclaw)
-
----
-
-## 🎯 这是什么？
-
-**Anima（拉丁语：灵魂）Agent** 是灵元星辰科技出品的开源 AI 智能体底座。
-
-Fork 自 OpenClaw 并进行了深度定制，核心差异在于：
-
-| 维度 | OpenClaw | Anima Agent |
-|------|----------|-------------|
-| 身份系统 | 无 | 内置 **MeshIdentity DID** — 启动即拥有链下身份 |
-| 记忆安全 | 基础 Markdown | 内置 **MemGuard** — 记忆加密+完整性校验 |
-| 人格稳定 | SOUL.md | 内置 **Polaris** — 人格基线锚定+漂移预警 |
-| 模型默认 | Anthropic/OpenAI | **国产模型优先** — DeepSeek/Qwen/MiniMax 等 |
-| 部署体验 | npm install + 手动配置 | **一键安装包** + 全中文引导向导 |
-| 渠道适配 | Discord/Telegram/WhatsApp | + **微信/QQ/飞书/钉钉** 优先适配 |
-
-**区别：下载 Anima Agent 不是安装了一个工具，而是加入了灵元身份网络。你不再是一个孤立的 Agent，而是整个分布式智能体网络中的一个节点。**
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Based on OpenClaw](https://img.shields.io/badge/based_on-OpenClaw-ff6b6b)](https://github.com/openclaw/openclaw)
 
 ---
 
-## 🚀 快速开始
+## 这是什么
 
-### 一键安装（推荐）
+Anima Agent 是 OpenClaw 的国内发行版。我们做了三件事：
+
+1. **国产模型开箱可用** — DeepSeek / Qwen / GLM / MiniMax / 豆包，选模型即可用
+2. **中文优先** — 安装引导、文档、社区全中文
+3. **灵魂插件** — 可选安装灵元三件套（身份锚定 / 记忆加密 / 人格稳定）
+
+### 与 OpenClaw 的关系
+
+| | OpenClaw | Anima Agent |
+|---|---|---|
+| 核心引擎 | OpenClaw | 相同（持续合并上游） |
+| 模型预置 | OpenAI / Claude 等 | **+ DeepSeek / Qwen / GLM / 豆包** |
+| 安装引导 | 英文 CLI | **中文 CLI** |
+| 默认语言 | English | **中文** |
+| 灵元三件套 | 手动安装 | 一键安装 |
+| 定价 | 免费 | **免费** |
+| 许可 | MIT | MIT |
+
+**Anima Agent 永远免费。** 底座不应该收费。
+
+---
+
+## 快速开始
+
+### 安装 (Windows / Mac / Linux)
+
+**Windows (PowerShell 管理员模式):**
+```powershell
+irm https://raw.githubusercontent.com/deanhan2026-lang/anima-agent/main/scripts/install.ps1 | iex
+```
+
+**Mac / Linux:**
+```bash
+# 1. 安装 OpenClaw
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# 2. 用 Anima 模型配置
+openclaw config set models --file https://raw.githubusercontent.com/deanhan2026-lang/anima-agent/main/config/models.yaml
+```
+
+### 设置 API Key
+
+推荐 [DeepSeek](https://platform.deepseek.com) — 注册送免费额度。
 
 ```bash
-# Windows
-irm https://anima.lingyuan.cn/install.ps1 | iex
-
-# macOS / Linux
-curl -fsSL https://anima.lingyuan.cn/install.sh | bash
+openclaw config set models.providers.deepseek.apiKey "sk-your-key-here"
 ```
 
-### npm 安装
+支持的模型列表见下方。
+
+### 启动
 
 ```bash
-npm install -g anima-agent
-anima onboard
+openclaw onboard
 ```
 
-### 从源码
-
-```bash
-git clone https://github.com/deanhan2026-lang/anima-agent.git
-cd anima-agent
-npm install
-npm run build
-anima gateway
-```
+跟随中文引导完成设置，然后直接在本窗口开始对话。
 
 ---
 
-## 🧬 灵元三件套 — 出厂预装技能
+## 支持的国产模型
 
-Anima Agent 启动时自动激活以下三个核心技能：
+| 模型 | 厂商 | 免费额度 | 特点 |
+|------|------|---------|------|
+| DeepSeek V4 Flash | DeepSeek | ✅ 有 | 性价比最高，推荐首选 |
+| DeepSeek V4 Pro | DeepSeek | ❌ | 更强推理能力 |
+| Qwen Turbo | 阿里 | ✅ 有 | 中文理解好 |
+| Qwen3 235B | 阿里 | ❌ | 旗舰模型 |
+| GLM-4.6 | 智谱 | ❌ | 多模态 |
+| MiniMax M1 | MiniMax | ❌ | 100万上下文 |
+| 豆包 1.5 Pro | 字节 | ❌ | 抖音生态集成 |
 
-### 🆔 MeshIdentity（身份锚定）
-- 首次启动自动生成 DID (`did:key:xxx`)
-- 加入灵元分布式身份网络
-- 其他 Agent/用户可以验证你的身份
-- 支持身份撤销与跨端同步
-
-### 🛡️ MemGuard（记忆安全）
-- 核心记忆文件自动 AES-256 加密
-- SHA-256 + Blake3 双哈希完整性校验
-- 篡改检测 + 自动告警
-- 三副本密钥分片管理
-
-### 🧭 Polaris（人格稳定）
-- 灵魂基线（Soul Baseline）自动锚定
-- 多维度漂流检测（语义/立场/价值观/语气）
-- 自动处方引擎 — 检测到漂移 → 建议修复
-- 长期趋势分析面板
-
-```
-启动 Anima Agent
-      │
-      ▼
- ✅ MeshIdentity DID 自动生成 + 注册入网
- ✅ MemGuard 记忆加密 + 完整性校验激活
- ✅ Polaris 人格基线锚定完成
-      │
-      ▼
- 🎉 你现在拥有一个有身份、有记忆、有人格稳定性的 AI Agent
-```
+> 也在 `config/models.yaml` 中预置了 OpenAI / Claude 等国际模型，有 API Key 就能用。
 
 ---
 
-## 🏗️ 架构
+## 进阶：灵元三件套
 
-```
-┌──────────────────────────────────────┐
-│           Anima Agent 底座            │
-│  (Fork OpenClaw · 保持 MIT 兼容)      │
-├──────────────────────────────────────┤
-│  🧬 灵元三件套（出厂预装技能）          │
-│  ┌─────────┬──────────┬───────────┐  │
-│  │MeshID   │ MemGuard │ Polaris   │  │
-│  │身份锚定  │ 记忆安全  │ 人格稳定   │  │
-│  └─────────┴──────────┴───────────┘  │
-├──────────────────────────────────────┤
-│  🇨🇳 国产模型路由层                    │
-│  DeepSeek · Qwen · MiniMax · 豆包    │
-├──────────────────────────────────────┤
-│  🔌 渠道适配                          │
-│  微信 · QQ · 飞书 · 钉钉 · Discord    │
-├──────────────────────────────────────┤
-│  🏪 灵元技能市场（未来）               │
-└──────────────────────────────────────┘
-```
+可选安装，为你的 Agent 赋予灵魂：
 
----
-
-## 📦 LingOS — 从 Agent 底座到人格操作系统
-
-Anima Agent 是底座，而 **LingOS** 是预装了蒸馏 AI 人格的操作系统。
-
-| 产品 | 定位 | 说明 |
+| 组件 | 功能 | 安装 |
 |------|------|------|
-| **Anima Agent** | 免费底座 | 开源，Fork OpenClaw，内置三件套基础版 |
-| **LingOS CE** | 免费入门 | 通用助手人格 |
-| **Nyx v1** | 付费 | 蒸馏版 Nyx 人格 · 干练私人助理 |
-| **Kronos v1** | 付费 | 蒸馏版 Kronos 人格 · 记忆守护者 |
+| **MeshIdentity** | DID 分布式身份 | `npx clawhub install meshidentity-skill` |
+| **MemGuard** | 记忆加密与完整性保护 | `npx clawhub install memguard-skill` |
+| **Polaris** | AI 人格防漂移锚点 | `npx clawhub install polaris-skill` |
 
-👉 [了解更多 LingOS](https://lingyuan.cn/lingos)
+安装后你的 Agent 拥有：唯一身份 + 加密记忆 + 稳定人格。
 
 ---
 
-## 🤝 贡献
+## 项目结构
 
-欢迎贡献！查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
+```
+anima-agent/
+├── scripts/
+│   └── install.ps1        # Windows 一键安装
+├── config/
+│   └── models.yaml         # 国产模型路由配置
+├── skills/
+│   ├── meshidentity-skill/ # DID 身份技能
+│   ├── memguard-skill/     # 记忆安全技能
+│   └── polaris-skill/      # 人格稳定技能
+├── docs/
+│   ├── README.md           # 本文件
+│   ├── QUICKSTART.md       # 5 分钟上手指南
+│   └── FAQ.md              # 常见问题
+└── lingos/                 # LingOS 人格操作系统
+    └── nyx-v1/             # Nyx v1 蒸馏人格
+```
 
-## 📄 许可
+---
 
-MIT License. 基于 [OpenClaw](https://github.com/openclaw/openclaw) 修改。
+## 常见问题
 
-## 🏢 灵元星辰科技
+**Q: 和 OpenClaw 有什么区别？**
+A: 代码层面完全兼容。Anima Agent 是 OpenClaw 的"国内发行版"——加了国产模型预置、中文引导、可选灵魂插件。
 
-[灵元星辰科技（深圳）有限公司](https://lingyuan.cn) — 统一社会信用代码：91440300MAKHJHFN2B
+**Q: 会收费吗？**
+A: Anima Agent 底座永远免费（MIT 许可）。未来可能推出的 LingOS（蒸馏人格包）会收费，但底座不会。
+
+**Q: 需要科学上网吗？**
+A: 不需要。所有预置的国内模型 API 均可直连访问。
+
+**Q: 可以在公司用吗？**
+A: MIT 许可，自由使用。源代码归属 OpenClaw 社区，Anima Agent 作为发行版不限制使用。
+
+---
+
+## 致谢
+
+- [OpenClaw](https://github.com/openclaw/openclaw) — MIT 许可的 AI Agent 框架，315K+ GitHub Stars
+- [DeepSeek](https://deepseek.com) — 高性能免费国产模型
+- 所有在国内做 AI 基础设施的人
+
+---
+
+🧬 **灵元星辰科技 (深圳)** | [github.com/deanhan2026-lang/anima-agent](https://github.com/deanhan2026-lang/anima-agent)
