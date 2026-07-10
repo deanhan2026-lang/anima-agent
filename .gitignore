@@ -1,0 +1,13 @@
+# Anima Agent
+
+node_modules/
+dist/
+.anima/
+*.log
+.env
+.env.local
+did.json
+activation.json
+*.pyc
+__pycache__/
+.pytest_cache/
