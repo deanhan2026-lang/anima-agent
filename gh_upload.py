@@ -3,7 +3,7 @@
 import json, os, sys, urllib.request, base64, subprocess, time
 
 REPO = "deanhan2026-lang/anima-agent"
-BRANCH = "main"  # GitHub 默认分支
+BRANCH = "master"  # GitHub 默认分支
 ROOT = r"C:\Users\Administrator\.qclaw\workspace-agent-d9479bde\projects\anima-agent"
 
 def get_token():
@@ -108,14 +108,17 @@ def upload_files():
     # Step 5: Create commit
     print("\nCreating commit...")
     new_commit = gh_api("POST", f"/repos/{REPO}/git/commits", {
-        "message": "feat: Anima Agent v0.1.0 — 灵元智能体底座首次提交\n\n"
-                   "🧬 核心提交:\n"
-                   "- 三件套出厂预装技能 (MeshIdentity/MemGuard/Polaris SKILL.md)\n"
-                   "- 自动激活脚本 (anima_init.py)\n"
-                   "- 集成规范 + 模型路由层 + 战略文档\n"
-                   "- README + AGENTS.md + LICENSE (MIT)\n\n"
-                   "基于 OpenClaw MIT 许可深度定制，中文优先，国产模型开箱即用。\n"
-                   "激活即入网 — 每个用户启动后自动获得 DID 并加入灵元分布式身份网络。",
+        "message": "feat: v0.1.0 Pre-alpha release — 文档完善 + 真实安装体验\n\n"
+                   "📝 文档更新:\n"
+                   "- README: 新增「真实安装体验」「Windows 用户提示」「npm 镜像配置」「MIT 合规声明」\n"
+                   "- CONTRIBUTING.md: 贡献指南 + MIT 合规要求 + 代码风格\n"
+                   "- CHANGELOG.md: v0.1.0 版本日志，标注 Pre-alpha/Developer Preview\n"
+                   "- docs/ISSUES_REAL_INSTALL.md: 华为笔记本实测 10 个安装问题\n"
+                   "- scripts/install.ps1: P0 修复 (npm 镜像/配置写入/PowerShell 转义)\n\n"
+                   "🔧 脚本修复:\n"
+                   "- install.ps1: 自动切换 npm 镜像 + Node.js v22+ 检测\n"
+                   "- install_lingskills.ps1: 三件套一键安装 (新增)\n\n"
+                   "基于 OpenClaw (MIT) 分发，国产模型开箱即用。", 
         "tree": new_tree["sha"],
         "parents": [head_sha],
     })
