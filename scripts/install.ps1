@@ -23,11 +23,44 @@ Write-Host "  Based on OpenClaw (MIT License)" -ForegroundColor DarkGray
 Write-Host ""
 
 # ===================================================================
-# Step 1: Install OpenClaw
+# Step 1: Install Node.js & OpenClaw
 # ===================================================================
 if (-not $SkipOpenClaw) {
-    Write-Host "[1/3] Checking OpenClaw..." -ForegroundColor Yellow
+    Write-Host "[1/4] Checking Node.js..." -ForegroundColor Yellow
 
+    # 1a. Check Node.js
+    $nodeOk = $false
+    try {
+        $nv = node -v 2>$null
+        if ($nv -match "v(\d+)" -and [int]$Matches[1] -ge 22) {
+            Write-Host "  [OK] Node.js $nv" -ForegroundColor Green
+            $nodeOk = $true
+        } elseif ($nv) {
+            Write-Host "  [WARN] Node.js $nv (need v22+), please upgrade:" -ForegroundColor Yellow
+            Write-Host "         https://npmmirror.com/mirrors/node/latest-v22.x/" -ForegroundColor Gray
+            Write-Host "         Download node-v22.*-x64.msi, install, then re-run this script." -ForegroundColor Gray
+            exit 1
+        }
+    } catch {}
+
+    if (-not $nodeOk) {
+        Write-Host "  [..] Node.js not found. Please install it first:" -ForegroundColor Yellow
+        Write-Host "       https://npmmirror.com/mirrors/node/latest-v22.x/" -ForegroundColor Gray
+        Write-Host "       Download the .msi file, install, then re-run this script." -ForegroundColor Gray
+        exit 1
+    }
+
+    # 1b. Switch npm to Chinese mirror (avoid GFW)
+    Write-Host "[2/4] Setting npm mirror..." -ForegroundColor Yellow
+    if (-not $DryRun) {
+        npm config set registry https://registry.npmmirror.com 2>$null
+        Write-Host "  [OK] npm mirror -> npmmirror.com" -ForegroundColor Green
+    } else {
+        Write-Host "  [DRY-RUN] Would set npm mirror" -ForegroundColor Gray
+    }
+
+    # 1c. Install OpenClaw
+    Write-Host "[3/4] Checking OpenClaw..." -ForegroundColor Yellow
     $openclawInstalled = $false
     try {
         $v = openclaw --version 2>$null
@@ -38,10 +71,10 @@ if (-not $SkipOpenClaw) {
     } catch {}
 
     if (-not $openclawInstalled) {
-        Write-Host "  [..] Installing OpenClaw (MIT, github.com/openclaw/openclaw)..." -ForegroundColor Gray
+        Write-Host "  [..] Installing OpenClaw via npm (MIT, github.com/openclaw/openclaw)..." -ForegroundColor Gray
         if (-not $DryRun) {
             try {
-                irm https://openclaw.ai/install.ps1 | iex
+                npm install -g openclaw 2>&1 | Out-Null
                 Write-Host "  [OK] OpenClaw installed" -ForegroundColor Green
             } catch {
                 Write-Host "  [FAIL] Could not install OpenClaw: $_" -ForegroundColor Red
@@ -58,7 +91,7 @@ if (-not $SkipOpenClaw) {
 # Step 2: Configure Chinese model routing
 # ===================================================================
 if (-not $SkipModels) {
-    Write-Host "[2/3] Configuring Chinese model providers..." -ForegroundColor Yellow
+    Write-Host "[4/4] Configuring Chinese model providers..." -ForegroundColor Yellow
     Write-Host "  DeepSeek / Qwen / GLM / MiniMax / Doubao" -ForegroundColor Gray
 
     if (-not $DryRun) {
@@ -96,7 +129,7 @@ if (-not $SkipModels) {
 # ===================================================================
 # Step 3: Done
 # ===================================================================
-Write-Host "[3/3] Done" -ForegroundColor Yellow
+Write-Host "Done" -ForegroundColor Yellow
 Write-Host ""
 
 Write-Host "  Anima Agent is ready." -ForegroundColor Green
