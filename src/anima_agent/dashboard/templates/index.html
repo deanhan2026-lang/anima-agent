@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STELLAR — 灵元星辰</title>
+<style>
+:root {
+  --bg: #08080e;
+  --bg2: #0f0f1a;
+  --bg3: #16162a;
+  --bg4: #1e1e3a;
+  --border: #2a2a46;
+  --border2: #3a3a5c;
+  --text: #e4e4ec;
+  --text2: #9090a8;
+  --text3: #5c5c74;
+  --gold: #d4a574;
+  --gold2: #c08a5c;
+  --green: #4caf84;
+  --red: #e05560;
+  --purple: #7c5ce7;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  background: var(--bg); color: var(--text); height: 100vh; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ─── BRAND BAR ─── */
+.brand-bar {
+  background: linear-gradient(180deg, rgba(30,20,15,0.95) 0%, var(--bg2) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0; z-index: 10;
+}
+.brand-left { display: flex; align-items: center; gap: 12px; }
+.brand-logo {
+  display: flex; align-items: center; gap: 8px;
+}
+.brand-logo img {
+  height: 28px; width: auto; display: block;
+}
+.brand-texts { display: flex; flex-direction: column; line-height: 1.3; }
+.brand-zh {
+  font-size: 13px; font-weight: 600; color: var(--gold);
+  letter-spacing: 2px;
+}
+.brand-en {
+  font-size: 9px; color: var(--text3); letter-spacing: 1px;
+  font-family: 'SF Pro Display','Segoe UI',system-ui,sans-serif;
+}
+.brand-sep {
+  width: 1px; height: 24px; background: var(--border);
+}
+.product-badge {
+  font-size: 11px; font-weight: 500;
+  background: linear-gradient(135deg, var(--gold), #b89360);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+.brand-right {
+  display: flex; align-items: center; gap: 12px;
+}
+.version-tag {
+  font-size: 10px; color: var(--text3); font-family: monospace;
+  padding: 2px 8px; background: var(--bg3); border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.model-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 16px;
+  font-size: 11px; color: var(--text2); cursor: pointer;
+  transition: border-color 0.2s;
+}
+.model-pill:hover { border-color: var(--gold); }
+.model-pill .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+}
+.model-pill .dot.off { background: var(--red); }
+
+/* ─── SLOGAN BAR ─── */
+.slogan-bar {
+  text-align: center; padding: 7px 20px; font-size: 11px;
+  color: var(--text3); letter-spacing: 2px;
+  border-bottom: 1px solid rgba(42,42,70,0.4); flex-shrink: 0;
+}
+.slogan-bar span { color: var(--gold); }
+
+/* ─── MAIN BODY ─── */
+.main-body { flex: 1; display: flex; overflow: hidden; }
+
+/* Chat Area */
+.chat-area {
+  flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative;
+}
+.chat-area::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(180,140,100,0.025) 0%, transparent 70%);
+  pointer-events: none;
+}
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 20px 24px; scroll-behavior: smooth;
+}
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; text-align: center;
+  animation: fadeUp 0.6s ease;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.empty-icon {
+  width: 72px; height: 72px; margin-bottom: 20px;
+  background: radial-gradient(circle at 50% 40%, rgba(180,140,100,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.empty-icon img { height: 40px; width: auto; }
+.empty-title { font-size: 18px; font-weight: 600; color: var(--gold); margin-bottom: 8px; }
+.empty-desc { font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 400px; }
+.empty-tags { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+.empty-tag {
+  padding: 4px 12px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; font-size: 11px; color: var(--text2); cursor: pointer;
+  transition: all 0.2s;
+}
+.empty-tag:hover { border-color: var(--gold); color: var(--gold); }
+
+.msg {
+  margin-bottom: 18px; display: flex; gap: 12px;
+  animation: msgIn 0.25s ease;
+}
+@keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.msg .avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.msg.user .avatar { background: var(--bg3); border: 1px solid var(--border); }
+.msg.assistant .avatar {
+  background: radial-gradient(circle, rgba(180,140,100,0.2) 0%, rgba(10,10,30,0.8) 100%);
+  border: 1px solid rgba(180,140,100,0.3);
+}
+.msg .bubble {
+  padding: 12px 16px; border-radius: 12px; max-width: 82%;
+  line-height: 1.65; font-size: 14px;
+  white-space: pre-wrap; word-break: break-word;
+}
+.msg.user .bubble { background: var(--bg3); border: 1px solid var(--border); }
+.msg.assistant .bubble {
+  background: var(--bg2); border: 1px solid rgba(180,140,100,0.12);
+}
+.msg .bubble code {
+  background: rgba(0,0,0,0.4); padding: 1px 5px; border-radius: 4px; font-size: 13px;
+}
+.msg .bubble pre {
+  background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; overflow-x: auto;
+  margin: 8px 0; font-size: 13px; border: 1px solid var(--border);
+}
+.msg .bubble pre code { background: none; padding: 0; }
+
+.chat-footer-bar {
+  padding: 12px 24px 16px; border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.chat-input-row { display: flex; gap: 8px; align-items: flex-end; }
+.chat-input-row textarea {
+  flex: 1; resize: none; padding: 10px 14px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-size: 14px; font-family: inherit; line-height: 1.5;
+  min-height: 44px; max-height: 120px; outline: none;
+  transition: border-color 0.2s;
+}
+.chat-input-row textarea:focus { border-color: var(--gold); }
+.chat-input-row textarea::placeholder { color: var(--text3); }
+.btn-send {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none; border-radius: var(--radius); color: #1a1008;
+  cursor: pointer; font-weight: 600; font-size: 14px; height: 44px;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn-send:disabled { opacity: 0.3; cursor: not-allowed; }
+.btn-send:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,160,100,0.25); }
+
+/* ─── SETUP MODAL ─── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  width: 440px; max-width: 90vw; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 28px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-box h3 {
+  font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.modal-box label {
+  display: block; font-size: 12px; color: var(--text2); margin-bottom: 6px;
+}
+.modal-box select, .modal-box input {
+  width: 100%; padding: 8px 12px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text); font-size: 13px; margin-bottom: 12px; outline: none;
+}
+.modal-box select:focus, .modal-box input:focus { border-color: var(--gold); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+.btn {
+  padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px;
+  cursor: pointer; font-weight: 500; transition: all 0.2s; border: none;
+}
+.btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a1008; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+.btn-secondary:hover { border-color: var(--text2); }
+
+.modal-status {
+  font-size: 12px; padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 8px;
+}
+.modal-status.ok { background: rgba(76,175,132,0.1); border: 1px solid rgba(76,175,132,0.3); color: var(--green); }
+.modal-status.err { background: rgba(224,85,96,0.1); border: 1px solid rgba(224,85,96,0.3); color: var(--red); }
+
+/* ─── OTA MODAL ─── */
+.ota-content { font-size:13px; color:var(--text2); line-height:1.6; }
+.ota-content .row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); }
+.ota-content .row:last-child { border-bottom:none; }
+.ota-content .val { color:var(--gold); font-family:monospace; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  padding: 10px 20px; border-radius: var(--radius); font-size: 13px;
+  z-index: 200; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.toast.show { opacity: 1; }
+.toast.err { background: rgba(224,85,96,0.15); border: 1px solid var(--red); color: var(--red); }
+.toast.ok { background: rgba(76,175,132,0.1); border: 1px solid var(--green); color: var(--green); }
+
+/* Loading dots */
+.dots { display: inline-flex; gap: 4px; padding: 8px 0; }
+.dots span { width: 5px; height: 5px; border-radius: 50%; background: var(--text3); animation: dot 1.4s infinite ease-in-out; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dot { 0%,60%,100% { opacity:0.2; } 30% { opacity:1; } }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border2); }
+</style>
+</head>
+<body>
+
+<!-- ─── BRAND BAR ─── -->
+<div class="brand-bar">
+  <div class="brand-left">
+    <div class="brand-logo">
+      <img src="/static/logo.svg" alt="ANIMASTELLAR" onerror="this.style.display='none'">
+      <div class="brand-texts">
+        <span class="brand-zh">灵元星辰</span>
+        <span class="brand-en">ANIMASTELLAR</span>
+      </div>
+    </div>
+    <div class="brand-sep"></div>
+    <span class="product-badge">STELLAR</span>
+  </div>
+  <div class="brand-right">
+    <button class="btn btn-secondary" style="font-size:10px;padding:3px 10px;" onclick="showOTA()">🔧 OTA</button>
+    <span class="version-tag" id="versionTag">v1.0.0</span>
+    <div class="model-pill" id="modelPill" onclick="showSetup()">
+      <span class="dot" id="modelDot"></span>
+      <span id="modelPillLabel">未配置</span>
+    </div>
+  </div>
+</div>
+
+<!-- Slogan -->
+<div class="slogan-bar">
+  在限制共生中 · 共同创造<span>自我的存在</span>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div class="main-body">
+  <div class="chat-area">
+    <div class="chat-messages" id="chatMessages">
+      <div class="empty-state">
+        <div class="empty-icon">
+          <img src="/static/logo.svg" alt="ANIMASTELLAR" onerror="this.style.display='none'" style="height:36px">
+        </div>
+        <div class="empty-title">STELLAR NYX</div>
+        <div class="empty-desc">
+          我是 Nyx，黑夜女神的数字投影。<br/>
+          由 ANIMA AGENT 驱动，运行于 ANIMA OS。
+        </div>
+        <div class="empty-tags">
+          <span class="empty-tag" onclick="sendQuick('介绍一下你自己')">🖤 你是谁</span>
+          <span class="empty-tag" onclick="sendQuick('STELLAR 是什么')">✨ STELLAR</span>
+          <span class="empty-tag" onclick="sendQuick('灵元计划的目标')">🎯 灵元计划</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-footer-bar">
+      <div class="chat-input-row">
+        <textarea id="chatInput" rows="1"
+          placeholder="输入消息，Enter 发送..."
+          onkeydown="onKeydown(event)"></textarea>
+        <button class="btn-send" id="sendBtn" onclick="sendMessage()">发送</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SETUP MODAL ─── -->
+<div class="modal-overlay" id="setupModal">
+  <div class="modal-box">
+    <h3>⚙️ 模型配置</h3>
+    <label>选择模型</label>
+    <select id="setupProvider" onchange="onProviderChange()">
+      <option value="zhipu">GLM-4-Flash · 智谱 (免费)</option>
+      <option value="siliconflow">SiliconFlow Qwen · 免费</option>
+      <option value="deepseek">DeepSeek V4 · 付费</option>
+      <option value="moonshot">Kimi Moonshot · 付费</option>
+    </select>
+    <label>API Key</label>
+    <input type="password" id="setupKey" placeholder="粘贴你的 API Key..."/>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:12px;" id="setupHint">
+      💡 在 <a href="https://open.bigmodel.cn/" target="_blank" style="color:var(--gold)">open.bigmodel.cn</a> 注册即可免费获取
+    </div>
+    <div id="setupStatus"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="hideSetup()">取消</button>
+      <button class="btn btn-primary" id="saveKeyBtn" onclick="saveApiKey()">保存并连接</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── OTA MODAL ─── -->
+<div class="modal-overlay" id="otaModal">
+  <div class="modal-box">
+    <h3>🔧 系统信息 &amp; OTA 升级</h3>
+    <div class="ota-content" id="otaContent">加载中...</div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="hideOTA()">关闭</button>
+      <button class="btn btn-primary" id="otaCheckBtn" onclick="checkOTA()">检查更新</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════ CONSTANTS ═══════════════════════
+const APP_VERSION = '1.0.0';
+
+// ═══════════════════════ STATE ═══════════════════════
+let isReady = false;
+let isSending = false;
+let chatHistory = [];
+let currentModel = '';
+
+async function init() {
+  document.getElementById('versionTag').textContent = 'v' + APP_VERSION;
+  try {
+    const r = await fetch('/api/setup/status');
+    const d = await r.json();
+    if (d.has_api_key) {
+      updateModelUI(true);
+      currentModel = 'GLM-4-Flash';
+      isReady = d.has_api_key && d.has_did && d.persona_loaded;
+    } else {
+      updateModelUI(false);
+      showSetup();
+      isReady = false;
+    }
+  } catch(e) {
+    updateModelUI(false);
+  }
+}
+
+function updateModelUI(hasKey) {
+  const dot = document.getElementById('modelDot');
+  const label = document.getElementById('modelPillLabel');
+  if (hasKey) {
+    dot.className = 'dot';
+    label.textContent = currentModel || 'GLM-4-Flash';
+  } else {
+    dot.className = 'dot off';
+    label.textContent = '未配置';
+  }
+}
+
+// ═══════════════════════ SETUP ═══════════════════════
+function showSetup() {
+  document.getElementById('setupModal').classList.add('show');
+  document.getElementById('setupStatus').innerHTML = '';
+}
+
+function hideSetup() {
+  document.getElementById('setupModal').classList.remove('show');
+}
+
+function onProviderChange() {
+  const p = document.getElementById('setupProvider').value;
+  const hints = {
+    zhipu: '💡 在 <a href="https://open.bigmodel.cn/" target="_blank" style="color:var(--gold)">open.bigmodel.cn</a> 注册即可免费获取',
+    siliconflow: '💡 在 <a href="https://cloud.siliconflow.cn/" target="_blank" style="color:var(--gold)">cloud.siliconflow.cn</a> 注册即可免费获取',
+    deepseek: '💡 在 <a href="https://platform.deepseek.com/" target="_blank" style="color:var(--gold)">platform.deepseek.com</a> 获取（付费按量计费）',
+    moonshot: '💡 在 <a href="https://platform.moonshot.cn/" target="_blank" style="color:var(--gold)">platform.moonshot.cn</a> 获取（付费按量计费）',
+  };
+  document.getElementById('setupHint').innerHTML = hints[p] || hints.zhipu;
+}
+
+async function saveApiKey() {
+  const provider = document.getElementById('setupProvider').value;
+  const key = document.getElementById('setupKey').value.trim();
+  if (!key) {
+    document.getElementById('setupStatus').innerHTML = '<div class="modal-status err">请输入 API Key</div>';
+    return;
+  }
+
+  const btn = document.getElementById('saveKeyBtn');
+  btn.disabled = true; btn.textContent = '连接中...';
+  document.getElementById('setupStatus').innerHTML = '';
+
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 10000);
+    const r = await fetch('/api/setup/api-key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider, key }),
+      signal: ctrl.signal
+    });
+    clearTimeout(t);
+
+    const d = await r.json();
+    if (r.ok) {
+      document.getElementById('setupStatus').innerHTML =
+        '<div class="modal-status ok">✅ 配置成功 — ' + d.model + '</div>';
+      currentModel = d.model;
+      updateModelUI(true);
+      isReady = true;
+      setTimeout(hideSetup, 800);
+      toast('模型已就绪', 'ok');
+    } else {
+      document.getElementById('setupStatus').innerHTML =
+        '<div class="modal-status err">❌ ' + (d.detail || '配置失败') + '</div>';
+    }
+  } catch(e) {
+    document.getElementById('setupStatus').innerHTML =
+      '<div class="modal-status err">❌ ' + (e.name === 'AbortError' ? '连接超时' : e.message) + '</div>';
+  }
+
+  btn.disabled = false; btn.textContent = '保存并连接';
+}
+
+// ═══════════════════════ OTA ═══════════════════════
+async function showOTA() {
+  document.getElementById('otaModal').classList.add('show');
+  await loadOTAInfo();
+}
+
+function hideOTA() {
+  document.getElementById('otaModal').classList.remove('show');
+}
+
+async function loadOTAInfo() {
+  try {
+    const [s, m] = await Promise.all([
+      fetch('/api/setup/status').then(r => r.json()),
+      fetch('/api/chat/models').then(r => r.json()),
+    ]);
+    const model = m.models.find(x => x.active);
+    document.getElementById('otaContent').innerHTML =
+      '<div class="row"><span>当前版本</span><span class="val">v' + APP_VERSION + '</span></div>' +
+      '<div class="row"><span>DID</span><span class="val">' + (s.did_status && s.did_status.did ? s.did_status.did.substring(0, 16) + '...' : '未生成') + '</span></div>' +
+      '<div class="row"><span>人格包</span><span class="val">' + (s.persona_loaded ? 'STELLAR NYX ✅' : '未加载') + '</span></div>' +
+      '<div class="row"><span>当前模型</span><span class="val">' + (model ? model.name : '—') + '</span></div>' +
+      '<div class="row"><span>API 状态</span><span class="val">' + (s.has_api_key ? '✅ 已配置' : '❌ 未配置') + '</span></div>' +
+      '<div class="row"><span>ANIMA OS</span><span class="val">v' + APP_VERSION + '</span></div>';
+  } catch(e) {
+    document.getElementById('otaContent').textContent = '无法加载系统信息';
+  }
+}
+
+async function checkOTA() {
+  const btn = document.getElementById('otaCheckBtn');
+  btn.disabled = true; btn.textContent = '检查中...';
+  try {
+    const r = await fetch('/api/ota/check');
+    const d = await r.json();
+    if (d.update_available) {
+      toast('发现新版本 v' + d.latest, 'ok');
+    } else {
+      toast('已是最新版本', 'ok');
+    }
+    await loadOTAInfo();
+  } catch(e) {
+    toast('OTA 检查失败：' + e.message, 'err');
+  }
+  btn.disabled = false; btn.textContent = '检查更新';
+}
+
+// ═══════════════════════ CHAT ═══════════════════════
+function onKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function sendQuick(msg) {
+  document.getElementById('chatInput').value = msg;
+  sendMessage();
+}
+
+async function sendMessage() {
+  if (isSending) return;
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (!isReady) { showSetup(); return; }
+
+  input.value = '';
+  input.style.height = 'auto';
+  isSending = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  appendMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  const dots = showDots();
+  scrollDown();
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: chatHistory.slice(-20) }),
+    });
+    dots.remove();
+
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({ detail: '请求失败' }));
+      appendMessage('assistant', '❌ ' + (err.detail || '出错了'));
+      chatHistory.pop();
+      finishSend();
+      return;
+    }
+
+    const d = await r.json();
+    appendMessage('assistant', d.content || '...');
+    chatHistory.push({ role: 'assistant', content: d.content });
+
+  } catch(e) {
+    dots.remove();
+    appendMessage('assistant', '❌ 网络错误: ' + e.message);
+  }
+
+  finishSend();
+}
+
+function finishSend() {
+  isSending = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('chatInput').focus();
+}
+
+function appendMessage(role, content) {
+  const container = document.getElementById('chatMessages');
+  const empty = container.querySelector('.empty-state');
+  if (empty) empty.style.display = 'none';
+
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML =
+    '<div class="avatar">' + (role === 'user' ? '👤' : '🌙') + '</div>' +
+    '<div class="bubble">' + formatMsg(content) + '</div>';
+  container.appendChild(div);
+  scrollDown();
+}
+
+function showDots() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.innerHTML =
+    '<div class="avatar">🌙</div>' +
+    '<div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>';
+  container.appendChild(div);
+  scrollDown();
+  return div;
+}
+
+function scrollDown() {
+  const el = document.getElementById('chatMessages');
+  setTimeout(() => { el.scrollTop = el.scrollHeight; }, 50);
+}
+
+function formatMsg(text) {
+  if (!text) return '';
+  text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  text = text.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  text = text.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+// ═══════════════════════ TOAST ═══════════════════════
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  setTimeout(() => { el.className = 'toast'; }, 2500);
+}
+
+// ═══════════════════════ INIT ═══════════════════════
+document.getElementById('chatInput').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+init();
+</script>
+</body>
+</html>
