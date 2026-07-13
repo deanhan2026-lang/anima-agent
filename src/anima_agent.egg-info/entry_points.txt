@@ -1,0 +1,2 @@
+[console_scripts]
+anima = anima_agent.cli.main:cli

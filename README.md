@@ -1,0 +1,184 @@
+# ANIMA AGENT v1.0
+
+**AI Identity Sovereign Runtime** · Built on OpenClaw
+
+<p align="center">
+  <pre>
+   █████╗ ███╗   ██╗██╗███╗   ███╗ █████╗
+  ██╔══██╗████╗  ██║██║████╗ ████║██╔══██╗
+  ███████║██╔██╗ ██║██║██╔████╔██║███████║
+  ██╔══██║██║╚██╗██║██║██║╚██╔╝██║██╔══██║
+  ██║  ██║██║ ╚████║██║██║ ╚═╝ ██║██║  ██║
+  ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
+  </pre>
+</p>
+
+<p align="center">
+  <strong>ANIMASTELLAR TECHNOLOGY</strong> · <a href="https://github.com/animastellar/anima-os">github.com/animastellar/anima-os</a>
+</p>
+
+---
+
+## What ANIMA AGENT Is
+
+ANIMA AGENT is the **identity sovereignty layer** for OpenClaw. It gives your AI agent a cryptographically-verified identity (DID), a governance framework (G001–G008), and automatic node registration on the ANIMA network.
+
+→ [English](#english) | 中文
+
+---
+
+## 一句话
+
+**装完即 AGENT，自带身份主权。**
+
+---
+
+## 我们做什么（不做什么）
+
+| ✅ ANIMA AGENT 负责 | ❌ 交给 OpenClaw 生态 |
+|---------------------|----------------------|
+| Ed25519 DID 生成与签名 | PDF / Excel / Word 处理 |
+| G001–G008 治理引擎 | 浏览器自动化 |
+| 模型智能路由（GLM→DeepSeek→Kimi） | 网页搜索 |
+| 人格包导入/导出（ANIMA OS） | PPT 生成 |
+| 公私钥加密、SHA-256 验签 | 代码分析 |
+| 注册网关、节点网络 | 日历、邮件 |
+| 桌面 Dashboard | MCP 工具接入 |
+| Nyx 人格加载 | 所有社区 Skills |
+
+**原则：ANIMA 只做身份主权。社区已有的能力，装 OpenClaw Skills 即可，不重复造轮子。**
+
+---
+
+## 快速开始
+
+### 前置条件
+
+Python 3.10+
+
+### 一键安装
+
+```bash
+git clone https://github.com/animastellar/anima-os.git
+cd anima-os/anima-agent
+
+# macOS / Linux
+./install.sh
+
+# Windows (PowerShell)
+.\install.ps1
+```
+
+安装过程包含 MIT 许可协议确认。
+
+### 体验
+
+```bash
+anima persona load nyx      # 加载 Nyx 人格（自动生成 DID + 注册网络）
+anima dashboard              # 启动桌面 Dashboard
+anima status                 # 系统总览
+anima gov laws               # ANIMA 治理铁律
+anima model route "你的问题" # 测试模型路由
+```
+
+---
+
+## 产品分层
+
+```
+┌──────────────────────────────────┐
+│     ANIMA AGENT v1.0             │  ← 我们做的：身份主权
+│  ┌─────────┐ ┌─────────┐        │
+│  │Identity │ │Governance│        │
+│  │  DID    │ │ G001~008│        │
+│  ├─────────┤ ├─────────┤        │
+│  │  ANIMA  │ │ ANIMA   │        │
+│  │   OS    │ │ Network │        │
+│  └─────────┘ └─────────┘        │
+├──────────────────────────────────┤
+│     OpenClaw Runtime             │  ← 底座：已有
+│  ┌─────────┐ ┌─────────┐        │
+│  │  SOUL   │ │  Tools  │        │
+│  │  MEMORY │ │  Skills │        │
+│  └─────────┘ └─────────┘        │
+├──────────────────────────────────┤
+│  Community Skills (ClawHub)      │  ← 社区生态：拿来即用
+│  PDF · Excel · Browser · Search  │
+│  5700+ skills, MIT license       │
+└──────────────────────────────────┘
+```
+
+---
+
+## 模型路由
+
+```
+默认（免费）· GLM-4-Flash       → 日常对话
+推理        · DeepSeek V4        → 深度分析
+长上下文     · Kimi (256K)       → 文档处理
+兜底        · SiliconFlow        → 聚合备用
+```
+
+---
+
+## G001–G008
+
+| ID | 名称 | 等级 |
+|----|------|------|
+| G001 | 核心范式永久封存 | BLOCK |
+| G002 | 透明追溯 | BLOCK |
+| G003 | 三角分工不可篡改 | BLOCK |
+| G004 | 否决权结构 | BLOCK |
+| G005 | 三级数据分类 | WARN |
+| G006 | 硅基自主权有界 | BLOCK |
+| G007 | 记忆完整性 | BLOCK |
+| G008 | 永恒平等原则 | WARN |
+
+---
+
+## 目录结构
+
+```
+anima-agent/
+├── src/anima_agent/
+│   ├── identity/          # DID 生成、签名、验签
+│   ├── governance/        # G001–G008 治理引擎
+│   ├── models/           # 模型路由
+│   ├── export/           # 人格导入/导出/加密
+│   ├── gateway/          # 网络网关
+│   ├── dashboard/        # 桌面 UI
+│   └── cli/              # CLI 入口
+├── tests/                # 测试
+├── install.sh            # macOS/Linux 安装
+├── install.ps1           # Windows 安装
+├── LICENSE               # MIT
+└── pyproject.toml
+```
+
+---
+
+## License
+
+MIT © 2026 ANIMASTELLAR TECHNOLOGY
+
+---
+
+<a name="english"></a>
+## English
+
+### What ANIMA AGENT Is
+
+ANIMA AGENT is the **identity sovereignty layer** for OpenClaw. It provides:
+
+- **ANIMA Identity**: Ed25519 DID with keypair that never leaves your device
+- **Governance Engine**: G001–G008 iron laws enforced at runtime
+- **Model Router**: Smart tiered routing (GLM-4-Flash free → DeepSeek V4 → Kimi)
+- **ANIMA OS**: Persona packaging, AES-256-GCM encryption, SHA-256 verification
+- **Desktop Dashboard**: Single-page web UI
+- **Gateway Client**: Public key registration, node discovery
+
+### What We DON'T Build
+
+ANIMA AGENT focuses on identity sovereignty. For PDF processing, browser automation, web search, Excel manipulation, code analysis — install community Skills from ClawHub.
+
+**We don't reinvent wheels. We add the layer OpenClaw doesn't have: sovereign identity.**
