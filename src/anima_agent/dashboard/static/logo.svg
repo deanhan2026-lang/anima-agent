@@ -1,12 +1,36 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
-  <!-- Logo mark: A+S intertwined monogram -->
-  <!-- Outer A -->
-  <path d="M25 50 L50 5 L75 50" stroke="#d4a574" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <!-- A crossbar / serif -->
-  <path d="M18 48 L80 48" stroke="#d4a574" stroke-width="5" stroke-linecap="round"/>
-  <!-- Inner S flowing through A -->
-  <path d="M55 42 C60 50, 40 60, 42 40 C44 20, 65 20, 62 28" stroke="#d4a574" stroke-width="5" stroke-linecap="round" fill="none"/>
-  <!-- Wordmark -->
-  <text x="95" y="32" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="500" letter-spacing="3" fill="#d4a574">ANIMASTELLAR</text>
-  <text x="95" y="46" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="9" letter-spacing="2" fill="#6a6a7e">STELLAR · v1.0</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
+  <defs>
+    <linearGradient id="brand-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="35%" stop-color="#8b5cf6"/>
+      <stop offset="65%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#e879f9"/>
+    </linearGradient>
+    <linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <!-- A+S intertwined monogram -->
+  <path d="M30 55 L55 10 L80 55" stroke="url(#brand-grad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M22 52 L85 52" stroke="url(#brand-grad)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M60 48 C65 55, 45 65, 47 45 C49 25, 70 25, 67 33" stroke="url(#brand-grad)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <!-- Constellation dots (subtle, secondary) -->
+  <circle cx="120" cy="30" r="1.8" fill="url(#gold-grad)" opacity="0.5"/>
+  <circle cx="140" cy="22" r="1.3" fill="url(#brand-grad)" opacity="0.35"/>
+  <circle cx="155" cy="38" r="1.6" fill="url(#gold-grad)" opacity="0.45"/>
+  <circle cx="175" cy="28" r="1.2" fill="#fff" opacity="0.25"/>
+  <circle cx="195" cy="42" r="1.5" fill="url(#brand-grad)" opacity="0.35"/>
+  <!-- Connecting constellation lines -->
+  <line x1="120" y1="30" x2="140" y2="22" stroke="url(#brand-grad)" stroke-width="0.4" opacity="0.2"/>
+  <line x1="140" y1="22" x2="155" y2="38" stroke="url(#gold-grad)" stroke-width="0.4" opacity="0.2"/>
+  <line x1="155" y1="38" x2="175" y2="28" stroke="#fff" stroke-width="0.3" opacity="0.15"/>
+  <line x1="175" y1="28" x2="195" y2="42" stroke="url(#brand-grad)" stroke-width="0.3" opacity="0.15"/>
+  <!-- Primary wordmark: ANIMASTELLAR -->
+  <text x="100" y="65" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="2.5" fill="url(#brand-grad)">ANIMASTELLAR</text>
+  <!-- Secondary: 灵元星辰 -->
+  <text x="100" y="82" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif" font-size="12" letter-spacing="4" fill="url(#gold-grad)">灵元星辰</text>
+  <!-- Tagline -->
+  <text x="330" y="70" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="7" letter-spacing="1.5" fill="#6a6a7e" text-anchor="end">在限制共生中</text>
+  <text x="330" y="81" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="7" letter-spacing="1.5" fill="#6a6a7e" text-anchor="end">共同创造自我的存在</text>
 </svg>
