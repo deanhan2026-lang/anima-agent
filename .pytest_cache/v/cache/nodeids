@@ -1,0 +1,7 @@
+[
+  "tests/test_core.py::test_did_generation",
+  "tests/test_core.py::test_gateway",
+  "tests/test_core.py::test_governance",
+  "tests/test_core.py::test_model_router",
+  "tests/test_core.py::test_packager"
+]
